@@ -23,7 +23,13 @@
 　　　　　//复制一行
                 var tr = $("#tb tr").eq(2).clone();
                 tr.find("td").get(0).innerHTML = ++i;
-				tr.find("td").get(2).after("<td style='text-align: center'><dic:dicList var='types' dicName='code_cpb'></dic:dicList><select style='width:189px;'  name='cpbh' ><option value='' selected = 'selected'>请选择</option><option value='1' >aa</option><c:forEach items='${types}' var='b' varStatus='s'><option value='${b.dicKey}'>${b.dicValue}</option></c:forEach></select></td>");
+				/*
+			* 由于tr.find("td").get(2)是一个Element元素，需要将它转变成jquery元素，所以加上了$(tr.find("td").get(2))
+			after函数用于将元素追加到一个元素的后面
+			*/
+			//	console.log($(tr.find("td").get(2)).after("<td>222</td>"));
+			//	console.log(tr.html());
+			//	tr.find("td").get(2).after("<td style='text-align: center'><dic:dicList var='types' dicName='code_cpb'></dic:dicList><select style='width:189px;'  name='cpbh' ><option value='' selected = 'selected'>请选择</option><option value='1' >aa</option><c:forEach items='${types}' var='b' varStatus='s'><option value='${b.dicKey}'>${b.dicValue}</option></c:forEach></select></td>");
                 tr.show();
                 tr.appendTo("#tb");
             });
