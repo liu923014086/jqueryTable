@@ -90,6 +90,9 @@
             var sum =0;
             var sl = 0;
             var dj = 0;
+
+
+
             $texts.each(function () {
                 var name = $(this).attr("name");
 
@@ -101,10 +104,13 @@
                     dj = parseFloat($(this).val());
                 }
                 if(sl!=0&&dj!=0) {
-                    sum = accMul(sl,dj);
+                    sum += accMul(sl,dj);
+                    sl = 0;
+                    dj = 0;
                 }
 
             });
+
             return sum;
 
         }
