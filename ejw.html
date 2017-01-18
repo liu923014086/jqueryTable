@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <link href="App_Files/CSS/default.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         #tb .td{
             text-align: center;
@@ -46,28 +45,83 @@
                 });
             });
         })
-		
-		
+
+        /**
+         * 验证是否为空
+         */
 		function validate(){
 			var $trs = $("#operateFormId").find("tr").filter(function(index){
 				var dis = $(this).css("display");
 				return dis=="none"?false:true;
 			});
+            var flag = true;
 			$texts = $trs.find("input,select");
 			$texts.each(function(index){
 				var name = $(this).attr("name");
 				if($(this).val()==""){
 					alert(nameMap[name]+"不能为空");
 					$(this).focus();
-					return false;
+                    flag = false;
+                    return false;
 				}
 			});
+            if(flag) {
+                var sumMoney = sumTotalMoney();
+                alert(sumMoney);
+            }
 		}
 		
 		var nameMap ={"cpid":"产品名称","sl":"数量","csjg":"单价","qzfzcfy":"签证费支出费用","qzfsqsftg":"支出申请状态"}
-		
-		
-    </script>
+
+        /**
+         * 计算总额
+         */
+
+        function sumTotalMoney() {
+
+            //获取每行的单价和数量
+            var $trs = $("#operateFormId").find("tr").filter(function(index){
+                var dis = $(this).css("display");
+                return dis=="none"?false:true;
+            });
+
+            $texts = $trs.find("input[type='text']");
+            var sum =0;
+            var sl = 0;
+            var dj = 0;
+            $texts.each(function () {
+                var name = $(this).attr("name");
+
+
+                if(name=='sl'){
+                    sl = parseFloat($(this).val());
+                }
+                if(name=="csjg"){
+                    dj = parseFloat($(this).val());
+                }
+                if(sl!=0&&dj!=0) {
+                    sum = accMul(sl,dj);
+                }
+
+            });
+            return sum;
+
+        }
+
+        function accMul(arg1,arg2){
+
+            var m=0,s1=arg1.toString(),s2=arg2.toString();
+
+            try{m+=s1.split(".")[1].length}catch(e){}
+
+            try{m+=s2.split(".")[1].length}catch(e){}
+
+            return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+
+        }
+
+
+</script>
     
     <form id="operateFormId" class="form-horizontal">
     	<div class="row-fluid ">
@@ -149,7 +203,8 @@
               </table>
               
               
-			<input type="button" value="tijiao" onclick="validate();"/>				
+			<input type="button" value="tijiao" onclick="validate();"/>
+        <input type="button" value="jisuan" onclick="sumTotalMoney();"/>
 
           </form>      
    </body>
