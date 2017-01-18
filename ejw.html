@@ -1,0 +1,163 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="App_Files/CSS/default.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        #tb .td{
+            text-align: center;
+            font-weight: bold;
+            background-color: #6699FF;
+            color: #FFFFFF;
+            border:1px solid #000;
+        }
+    </style>
+    <script src="jquery.js" type="text/javascript"></script>
+<script type="text/javascript">
+        $(document).ready(function() {
+            //隐藏模板tr
+           $("#tb tr").eq(2).hide();
+            var i = 0;
+            $("#BtAdd").click(function() {
+　　　　　//复制一行
+                var tr = $("#tb tr").eq(2).clone();
+                tr.find("td").get(0).innerHTML = ++i;
+              $(tr.find("td").get(1)).after("<td style='text-align: center'><dic:dicList var='types' dicName='code_cpb'></dic:dicList><select style='width:189px;'  name='cpid' ><option value='' selected = 'selected'>请选择</option><c:forEach items='${types}' var='b' varStatus='s'><option value='${b.dicKey}'>${b.dicValue}</option></c:forEach></select></td>");
+                tr.show();
+                tr.appendTo("#tb");
+            //    $("#tb").after("<td style='text-align: center'><dic:dicList var='types' dicName='code_cpb'></dic:dicList><select style='width:189px;'  name='cpbh' ><option value='' selected = 'selected'>请选择</option><option value='1' >aa</option><c:forEach items='${types}' var='b' varStatus='s'><option value='${b.dicKey}'>${b.dicValue}</option></c:forEach></select></td>");
+            });
+            $("#BtDel").click(function() {
+                $("#tb tr:gt(2)").each(function() {
+                    if ($(this).find("#CK").get(0).checked == true) {
+                        $(this).remove();
+                    }
+                });
+                i = 0;
+                $("#tb tr:gt(2)").each(function() {
+                    $(this).find("td").get(0).innerHTML = ++i;
+                });
+                $("#CKA").attr("checked", false);
+            });
+            $("#CKA").click(function() {
+                $("#tb tr:gt(2)").each(function() {
+                    $(this).find("#CK").get(0).checked = $("#CKA").get(0).checked;
+                });
+            });
+        })
+		
+		
+		function validate(){
+			var $trs = $("#operateFormId").find("tr").filter(function(index){
+				var dis = $(this).css("display");
+				return dis=="none"?false:true;
+			});
+			$texts = $trs.find("input[type='text']");
+			$select = $trs.find("select");
+			$texts.each(function(index){
+				var cpmc = $select[index].val();
+				var name = $(this).attr("name");
+				if(cpmc==""){
+					alert("产品名称不能为空");
+					$select[index].focus();
+					return false;
+				}
+				if($(this).val()==""){
+					alert(nameMap[name]+"不能为空");
+					$(this).focus();
+					return false;
+				}
+			});
+		}
+		
+		var nameMap ={"sl":"数量","csjg":"单价","qzfzcfy":"签证费支出费用","qzfsqsftg":"支出申请状态"}
+		
+		
+    </script>
+    
+    <form id="operateFormId" class="form-horizontal">
+    	<div class="row-fluid ">
+							<div class="span6 ">
+								<div class="control-group">
+									<label class="control-label" for="sc">会员名<span
+										class="required">*</span></label>
+									<div class="controls">
+										
+										<select name="hyid">
+											<option value="" selected = "selected">请选择</option>
+											<c:forEach items="${hyblist}" var="hyb" varStatus="s">
+							                                       <option value="${hyb.id}">
+							                                        ${hyb.xm}
+							                                    </option>
+							                </c:forEach>
+										
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+    
+              <table class="table table-condensed table-bordered" id="tb">
+                   <tbody>
+                   <tr>
+                <td colspan="10" style="text-align:right">
+                    <input id="BtAdd" type="button" value="添加" />&nbsp;<input id="BtDel" type="button" value="删除" /></td>
+            </tr>
+                   
+                        <tr>
+                             <td></td>
+                             <td style="text-align: center;">
+                             <input id="CKA" name="CKA" type="checkbox" /></td>
+                             
+                             </td>
+                             <td style="width:20%;    text-align: center;">
+                                  产品名称
+                             </td>
+                             <td style="width:10%;text-align: center;">
+                                  数量
+                             </td>
+                             <td style="width:10%;text-align: center;">
+                                  单价
+                             </td>
+                             <td style="width:20%;text-align: center;">
+                                  签证费支出费用
+                             </td>
+             
+                             <td style="width:20%;text-align: center;">
+                                  支出申请状态
+                             </td>
+                             
+                             
+                        </tr>
+                       
+                         <tr>
+                <td style="text-align: center"></td>
+                <td style="text-align: center">
+                    <input id="CK" type="checkbox" name="CK"/></td>
+                    
+                    
+               
+                <td style="text-align: center">
+                    <input id="sl" type="text" name="sl" style="width:80px;"/></td>
+               
+                <td style="text-align: center">
+                    <input id="csjg" type="text" name="csjg" style="width:100px;"/></td>
+                
+                <td style="text-align: center">
+                    <input id="qzfzcfy" type="text" size="10" name="qzfzcfy" style="width:100px;"/></td>
+                <td style="text-align: center">
+                    <input id="qzfsqsftg" type="text"  name="qzfsqsftg" style="width:100px;"/></td>
+                    
+                  
+              
+            </tr>
+                   </tbody>
+              </table>
+              
+              
+			<input type="button" value="tijiao" onclick="validate();"/>				
+
+          </form>      
+   </body>
+</html>
