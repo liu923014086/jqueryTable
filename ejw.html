@@ -53,16 +53,9 @@
 				var dis = $(this).css("display");
 				return dis=="none"?false:true;
 			});
-			$texts = $trs.find("input[type='text']");
-			$select = $trs.find("select");
+			$texts = $trs.find("input,select");
 			$texts.each(function(index){
-				var cpmc = $select[index].val();
 				var name = $(this).attr("name");
-				if(cpmc==""){
-					alert("产品名称不能为空");
-					$select[index].focus();
-					return false;
-				}
 				if($(this).val()==""){
 					alert(nameMap[name]+"不能为空");
 					$(this).focus();
@@ -71,7 +64,7 @@
 			});
 		}
 		
-		var nameMap ={"sl":"数量","csjg":"单价","qzfzcfy":"签证费支出费用","qzfsqsftg":"支出申请状态"}
+		var nameMap ={"cpid":"产品名称","sl":"数量","csjg":"单价","qzfzcfy":"签证费支出费用","qzfsqsftg":"支出申请状态"}
 		
 		
     </script>
